@@ -1,0 +1,104 @@
+{
+  "accounts": [
+    {
+      "id": 1,
+      "accountName": "Compte principal",
+      "balance": 1029,
+      "currency": "EUR"
+    },
+    {
+      "id": 2,
+      "accountName": "Compte d'épargne",
+      "balance": 5000,
+      "currency": "USD"
+    },
+    {
+      "id": 3,
+      "accountName": "dddd",
+      "balance": 3,
+      "currency": "dd"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "accountId": 1,
+      "date": "2023-10-15",
+      "category": "Alimentation",
+      "amount": -50,
+      "description": "Courses au supermarché"
+    },
+    {
+      "id": 2,
+      "accountId": 1,
+      "date": "2023-10-20",
+      "category": "Salaire",
+      "amount": 2000,
+      "description": "Salaire mensuel"
+    },
+    {
+      "id": 3,
+      "accountId": 1,
+      "date": "2023-11-24",
+      "category": "entrée",
+      "amount": 4,
+      "description": "ddd"
+    },
+    {
+      "id": 4,
+      "accountId": 1,
+      "date": "2023-11-24",
+      "category": "entrée",
+      "amount": 2,
+      "description": "cc"
+    },
+    {
+      "id": 5,
+      "accountId": 1,
+      "date": "2023-11-24",
+      "category": "dépense",
+      "amount": 2,
+      "description": "dd"
+    },
+    {
+      "id": 6,
+      "accountId": 1,
+      "date": "2023-11-10",
+      "category": "dépense",
+      "amount": 2,
+      "description": "ddd"
+    },
+    {
+      "id": 7,
+      "accountId": 1,
+      "date": "2023-11-23",
+      "category": "entrée",
+      "amount": 12,
+      "description": "ssss"
+    },
+    {
+      "id": 8,
+      "accountId": 1,
+      "date": "2023-11-15",
+      "category": "dépense",
+      "amount": 5,
+      "description": "sss"
+    },
+    {
+      "id": 9,
+      "accountId": 1,
+      "date": "2023-11-22",
+      "category": "revenu",
+      "amount": 33,
+      "description": "ddd"
+    },
+    {
+      "id": 10,
+      "accountId": 1,
+      "date": "2023-11-17",
+      "category": "revenu",
+      "amount": 3,
+      "description": "dd"
+    }
+  ]
+}
