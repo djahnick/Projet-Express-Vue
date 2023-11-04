@@ -3,102 +3,75 @@
     {
       "id": 1,
       "accountName": "Compte principal",
-      "balance": 1029,
+      "initialBalance": 1000,
+      "balance": 1064,
       "currency": "EUR"
     },
     {
       "id": 2,
       "accountName": "Compte d'épargne",
-      "balance": 5000,
+      "initialBalance": 5005,
+      "balance": 5005,
       "currency": "USD"
     },
     {
       "id": 3,
       "accountName": "dddd",
+      "initialBalance": 3,
       "balance": 3,
       "currency": "dd"
+    },
+    {
+      "id": 4,
+      "accountName": "",
+      "initialBalance": 0,
+      "balance": 0,
+      "currency": ""
+    },
+    {
+      "id": 5,
+      "accountName": "",
+      "initialBalance": 0,
+      "balance": 0,
+      "currency": ""
+    },
+    {
+      "id": 6,
+      "accountName": "djah",
+      "initialBalance": 22,
+      "balance": 22,
+      "currency": "eur"
+    },
+    {
+      "id": 7,
+      "accountName": "test ",
+      "initialBalance": 96,
+      "balance": 96,
+      "currency": "eur"
+    },
+    {
+      "id": 8,
+      "accountName": "djah1",
+      "initialBalance": 190,
+      "balance": 190,
+      "currency": "EUR"
+    },
+    {
+      "id": 9,
+      "initialBalance": 1000,
+      "balance": 100,
+      "accountName": "1000",
+      "currency": "eur"
     }
   ],
   "transactions": [
     {
       "id": 1,
-      "accountId": 1,
-      "date": "2023-10-15",
-      "category": "Alimentation",
-      "amount": -50,
-      "description": "Courses au supermarché"
-    },
-    {
-      "id": 2,
-      "accountId": 1,
-      "date": "2023-10-20",
-      "category": "Salaire",
-      "amount": 2000,
-      "description": "Salaire mensuel"
-    },
-    {
-      "id": 3,
-      "accountId": 1,
-      "date": "2023-11-24",
-      "category": "entrée",
-      "amount": 4,
-      "description": "ddd"
-    },
-    {
-      "id": 4,
-      "accountId": 1,
-      "date": "2023-11-24",
-      "category": "entrée",
-      "amount": 2,
-      "description": "cc"
-    },
-    {
-      "id": 5,
-      "accountId": 1,
-      "date": "2023-11-24",
-      "category": "dépense",
-      "amount": 2,
-      "description": "dd"
-    },
-    {
-      "id": 6,
-      "accountId": 1,
-      "date": "2023-11-10",
-      "category": "dépense",
-      "amount": 2,
-      "description": "ddd"
-    },
-    {
-      "id": 7,
-      "accountId": 1,
-      "date": "2023-11-23",
-      "category": "entrée",
-      "amount": 12,
-      "description": "ssss"
-    },
-    {
-      "id": 8,
-      "accountId": 1,
-      "date": "2023-11-15",
-      "category": "dépense",
-      "amount": 5,
-      "description": "sss"
-    },
-    {
-      "id": 9,
-      "accountId": 1,
-      "date": "2023-11-22",
+      "accountId": 9,
+      "date": "2023-11-11",
       "category": "revenu",
-      "amount": 33,
-      "description": "ddd"
-    },
-    {
-      "id": 10,
-      "accountId": 1,
-      "date": "2023-11-17",
-      "category": "revenu",
-      "amount": 3,
-      "description": "dd"
+      "amount": 0,
+      "description": ""
     }
   ]
 }

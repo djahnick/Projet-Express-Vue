@@ -1,0 +1,713 @@
+Bank-front :
+
+
+
+bank-frontend/src/components/AccountForm.vue:
+
+<template>
+  <div>
+    <h2>Créer un Nouveau Compte</h2>
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="accountName">Nom du Compte:</label>
+        <input v-model="account.accountName" type="text" id="accountName">
+      </div>
+      <div>
+        <label for="balance">Solde Initial:</label>
+        <input v-model.number="account.balance" type="number" id="balance">
+      </div>
+      <div>
+        <label for="currency">Devise:</label>
+        <input v-model="account.currency" type="text" id="currency">
+      </div>
+      <button type="submit">Créer Compte</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'AccountForm',
+  data() {
+    return {
+      account: {
+        accountName: '',
+        balance: 0,
+        currency: ''
+      }
+    };
+  },
+  methods: {
+    async submitForm() {
+      try {
+        const response = await axios.post('http://localhost:3000/accounts', this.account);
+        alert('Compte créé avec succès!');
+        this.resetForm();
+      } catch (error) {
+        console.error('Il y avait une erreur en créant le compte', error);
+      }
+    },
+    resetForm() {
+      this.account.accountName = '';
+      this.account.balance = 0;
+      this.account.currency = '';
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Ajoutez du CSS ici si nécessaire */
+</style>
+
+
+ ------------------------------------------------------------------------------------------------------------------------
+bank-frontend/src/components/AccountList.vue :
+
+
+<template>
+  <div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold text-center my-6">Liste des Comptes</h2>
+    <div class="flex flex-col">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nom du Compte
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Solde
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Devise
+                  </th>
+                  <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">Voir les détails</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="account in accounts" :key="account.id">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="text-sm font-medium text-gray-900">
+                        {{ account.accountName }}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">{{ account.balance }}</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      {{ account.currency }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <router-link :to="`/account/${account.id}`" class="text-indigo-600 hover:text-indigo-900">Voir</router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'AccountList',
+  data() {
+    return {
+      accounts: []
+    };
+  },
+  async created() {
+    try {
+      const response = await axios.get('http://localhost:3000/accounts');
+      this.accounts = response.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des comptes', error);
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Styles supplémentaires pour la personnalisation de la table, si nécessaire */
+</style>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/components/CreateAccountForm.vue
+<template>
+  <div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Créer un Nouveau Compte</h2>
+    <div class="w-full max-w-sm mx-auto">
+      <form @submit.prevent="createAccount" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="account-name">
+            Nom du Compte
+          </label>
+          <input v-model="accountData.accountName" type="text" placeholder="Nom du Compte"
+                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                 id="account-name" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="initial-balance">
+            Solde Initial
+          </label>
+          <input v-model.number="accountData.balance" type="number" placeholder="Solde Initial"
+                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                 id="initial-balance" required min="0">
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="currency">
+            Devise
+          </label>
+          <input v-model="accountData.currency" type="text" placeholder="Devise"
+                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                 id="currency" required pattern="[A-Za-z]{3}">
+        </div>
+        <div class="flex items-center justify-between">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+            Créer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'CreateAccountForm',
+  data() {
+    return {
+      accountData: {
+        accountName: '',
+        balance: 0,
+        currency: ''
+      }
+    };
+  },
+  methods: {
+    async createAccount() {
+      try {
+        await axios.post('http://localhost:3000/accounts/', this.accountData);
+        this.$router.push('/accounts'); // Redirect to the accounts list on success
+      } catch (error) {
+        console.error("Erreur lors de la création du compte", error);
+        this.$emit('error', "Erreur lors de la création du compte."); // Emit an event for the error
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Tailwind CSS is utility-first, so you might not need custom CSS here */
+</style>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/components/TransactionForm.vue : 
+<template>
+  <div class="container mx-auto p-6 bg-white shadow-md rounded">
+
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Ajouter une Transaction</h2>
+    <form @submit.prevent="submitForm" class="space-y-4">
+      <div>
+        <label for="date" class="block text-sm font-medium text-gray-700">Date:</label>
+        <input type="date" id="date" v-model="transaction.date" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+      </div>
+      <div>
+        <label for="category" class="block text-sm font-medium text-gray-700">Catégorie:</label>
+        <select id="category" v-model="transaction.category" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+          <option value="dépense">dépense</option>
+          <option value="revenu">revenu</option>
+        </select>
+      </div>
+      <div>
+        <label for="amount" class="block text-sm font-medium text-gray-700">Montant:</label>
+        <input type="number" id="amount" v-model="transaction.amount" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+      </div>
+      <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Description:</label>
+        <textarea id="description" v-model="transaction.description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"></textarea>
+      </div>
+      <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Soumettre la Transaction</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'TransactionForm',
+  props: {
+    accountId: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+      transaction: {
+        date: '',
+        category: '',
+        amount: 0,
+        description: ''
+      }
+    };
+  },
+  methods: {
+    async submitForm() {
+      try {
+        await axios.post(`http://localhost:3000/accounts/${this.accountId}/transactions`, this.transaction);
+        alert('Transaction ajoutée avec succès!');
+        this.$emit('transaction-created'); // Émettre un événement pour actualiser la liste des transactions
+        // Réinitialiser le formulaire après l'envoi
+        this.transaction = { date: '', category: '', amount: 0, description: '' };
+      } catch (error) {
+        console.error('Erreur lors de lajout de la transaction', error);
+        alert('Erreur lors de la création de la transaction');
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* ... */
+</style>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/components/TransactionList.vue : 
+<template>
+
+  <div v-if="isEditing" class="fixed inset-0 bg-black bg-opacity-50 h-full w-full flex justify-center items-center">
+      <div class="bg-white p-4 rounded-lg">
+        <form @submit.prevent="updateTransaction">
+          <!-- Formulaire pour modifier la transaction -->
+          <div>
+            <label for="edit-description" class="block text-sm font-medium text-gray-700">Description</label>
+            <input type="text" id="edit-description" v-model="transactionToEdit.description" class="mt-1 block w-full" required>
+          </div>
+          <div class="mt-4">
+            <label for="edit-amount" class="block text-sm font-medium text-gray-700">Montant</label>
+            <input type="number" id="edit-amount" v-model="transactionToEdit.amount" class="mt-1 block w-full" required>
+          </div>
+          <div class="mt-4">
+            <label for="edit-date" class="block text-sm font-medium text-gray-700">Date</label>
+            <input type="date" id="edit-date" v-model="transactionToEdit.date" class="mt-1 block w-full" required>
+          </div>
+          <div class="mt-4 flex justify-end space-x-2">
+            <button type="button" @click="isEditing = false" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+              Annuler
+            </button>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Sauvegarder
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="container mx-auto p-4">
+      <h2 class="text-2xl font-semibold mb-4">Transactions</h2>
+      <ul v-if="transactions.length" class="bg-white shadow-md rounded-lg overflow-hidden">
+        <li v-for="transaction in transactions" :key="transaction.id" class="px-6 py-4 border-b hover:bg-gray-100">
+          <div class="flex justify-between items-center">
+            <!-- Section pour Revenus -->
+            <div v-if="transaction.category === 'revenu'" class="flex items-center space-x-4">
+              <span class="p-2 inline-flex items-center justify-center text-green-500">
+                <i class="fas fa-arrow-down"></i> <!-- Icone de revenu -->
+              </span>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-gray-600">Revenu</p>
+                <p class="text-gray-800">{{ transaction.description }}</p>
+                <p class="text-gray-500 text-xs">{{ formatDate(transaction.date) }}</p>
+              </div>
+              <span class="text-green-500 font-semibold">{{ formatAmount(transaction.amount) }}</span>
+              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
+              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
+    Modifier
+  </button>
+  
+            </div>
+            
+            <!-- Placeholder quand il n'y a pas de revenu -->
+            <div v-else class="flex-1"></div>
+            
+            <!-- Section pour Dépenses -->
+            <div v-if="transaction.category === 'dépense'" class="flex items-center justify-end space-x-4">
+              <span class="text-red-500 font-semibold">{{ formatAmount(transaction.amount) }}</span>
+              <div class="flex-1 text-right">
+                <p class="text-sm font-semibold text-gray-600">Dépense</p>
+                <p class="text-gray-800">{{ transaction.description }}</p>
+                <p class="text-gray-500 text-xs">{{ formatDate(transaction.date) }}</p>
+              </div>
+              <span class="p-2 inline-flex items-center justify-center text-red-500">
+                <i class="fas fa-arrow-up"></i> <!-- Icone de dépense -->
+              </span>
+              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
+              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
+    Modifier
+  </button>
+  
+            </div>
+            
+            <!-- Placeholder quand il n'y a pas de dépense -->
+            <div v-else class="text-red-500"></div>
+          </div>
+        </li>
+      </ul>
+      <div v-else class="text-center py-4">
+        <p>Aucune transaction disponible.</p>
+      </div>
+      
+    </div>
+  </template>
+  
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    name: 'TransactionList',
+    props: {
+      accountId: {
+        type: Number,
+        required: true
+      }
+    },
+    data() {
+      return {
+        transactions: [],
+        isEditing: false,
+        transactionToEdit: null
+      };
+    },
+    watch: {
+      accountId: {
+        immediate: true,
+        handler() {
+          this.fetchTransactions();
+        }
+      }
+    },
+    methods: {
+      async fetchTransactions() {
+        try {
+          const response = await axios.get(`http://localhost:3000/accounts/${this.accountId}/transactions`);
+          this.transactions = response.data;
+        } catch (error) {
+          console.error('Erreur lors de la récupération des transactions', error);
+        }
+      },
+      formatDate(date) {
+        return new Date(date).toLocaleDateString('fr-FR');
+      },
+      formatAmount(amount) {
+        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+      },
+      async deleteTransaction(transactionId) {
+      try {
+        await axios.delete(`http://localhost:3000/transactions/${transactionId}`);
+        this.transactions = this.transactions.filter(t => t.id !== transactionId);
+      } catch (error) {
+        console.error('Erreur lors de la suppression de la transaction', error);
+      }
+    },
+    startEditTransaction(transaction) {
+        this.transactionToEdit = { ...transaction };
+        this.isEditing = true;
+      },
+      async updateTransaction() {
+        try {
+          await axios.put(`http://localhost:3000/transactions/${this.transactionToEdit.id}`, this.transactionToEdit);
+          const index = this.transactions.findIndex(t => t.id === this.transactionToEdit.id);
+          this.transactions.splice(index, 1, this.transactionToEdit);
+          this.isEditing = false;
+        } catch (error) {
+          console.error('Erreur lors de la mise à jour de la transaction', error);
+        }
+      }
+    }
+  };
+  </script>
+  
+  <style scoped>
+  /* Tailwind classes are handling all the styling needs. If you have custom styles, you can add them here */
+  
+  </style>
+  
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+bank-frontend/src/router/index.js
+
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/views/Home.vue';
+import AccountList from '@/components/AccountList.vue';
+import CreateAccountForm from '@/components/CreateAccountForm.vue';
+import AccountDetails from '@/views/AccountDetails.vue';
+
+
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/accounts',
+    name: 'AccountList',
+    component: AccountList
+  },
+  {
+    path: '/create-account',
+    name: 'CreateAccount',
+    component: CreateAccountForm
+  },
+  {
+    path: '/account/:id',
+    name: 'AccountDetails',
+    component: AccountDetails
+  },
+  // Ajoutez d'autres routes si nécessaire
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+export default router;
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/views/AccountDetails.vue : 
+
+
+<template>
+  <div class="container mx-auto p-8">
+    <h2 class="text-2xl font-semibold mb-6">Détails du Compte</h2>
+    
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <p class="text-sm font-bold mb-2">Nom du Compte:</p>
+      <p class="mb-4">{{ accountDetails.accountName }}</p>
+      <p class="text-sm font-bold mb-2">Solde Initial:</p>
+      <p class="mb-4">{{ formattedInitialBalance }}</p>
+      <p class="text-sm font-bold mb-2">Solde Actuel:</p>
+      <p class="mb-4">{{ formattedBalance }}</p>
+    </div>
+    
+    <TransactionForm 
+      :accountId="accountDetails.id" 
+      @transaction-created="updateTransactions"
+    />
+
+    <TransactionList 
+      ref="transactionList" 
+      :accountId="accountDetails.id"
+    />
+    <AccountChart :accountId="accountDetails.id" />
+
+    
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import TransactionForm from '../components/TransactionForm.vue';
+import TransactionList from '../components/TransactionList.vue';
+import AccountChart from '../components/AccountChart.vue'; // Assurez-vous que le chemin d'importation est correct
+
+
+export default {
+  name: 'AccountDetails',
+  components: {
+    TransactionForm,
+    TransactionList,
+    AccountChart
+    
+  },
+  data() {
+    return {
+      // Set initial values to avoid errors before the actual data is fetched
+      accountDetails: {
+        balance: 0,
+        currency: 'EUR', // Replace 'EUR' with your default or expected currency
+        accountName: '',
+        id: null
+      }
+    };
+  },
+  computed: {
+    formattedBalance() {
+      // Check if accountDetails has the necessary properties to avoid errors
+      if (typeof this.accountDetails.currency === 'string' && typeof this.accountDetails.balance === 'number') {
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: this.accountDetails.currency
+        }).format(this.accountDetails.balance);
+      }
+      // Return a placeholder or empty string if the data is not yet available
+      return 'Chargement...';
+    }
+  },
+  async created() {
+    await this.fetchAccountDetails();
+  },
+  methods: {
+    async fetchAccountDetails() {
+      try {
+        const accountId = this.$route.params.id;
+        const response = await axios.get(`http://localhost:3000/accounts/${accountId}`);
+        this.accountDetails = response.data;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des détails du compte', error);
+        // Handle error, show user-friendly message if needed
+      }
+    },
+    async updateTransactions() {
+      // Refresh account details and transaction list
+      await this.fetchAccountDetails();
+      if (this.$refs.transactionList) {
+        this.$refs.transactionList.fetchTransactions();
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+/* Add your styles here */
+</style>
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/views/home.vue : 
+<template>
+  <div class="container mx-auto px-4 py-10">
+    <div class="flex justify-center">
+      <div class="w-full max-w-2xl">
+        <div class="bg-white shadow-xl rounded-xl p-8">
+          <h1 class="text-4xl font-bold text-center mb-10 text-gray-800">Bienvenue à MKDG Banque</h1>
+          
+          <!-- Vue d'ensemble des comptes -->
+          <div class="mb-6">
+            <router-link to="/accounts" class="block">
+              <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
+                Voir les Comptes
+              </button>
+            </router-link>
+          </div>
+          
+          <!-- Création d'un nouveau compte -->
+          <div class="mb-6">
+            <router-link to="/create-account" class="block">
+              <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
+                Créer un Compte
+              </button>
+            </router-link>
+          </div>
+          
+          <!-- Gestion de profil -->
+          <div class="mb-6">
+            <router-link to="/profile" class="block">
+              <button class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-4 rounded transition ease-in-out duration-150">
+                Gérer le Profil
+              </button>
+            </router-link>
+          </div>
+
+          <!-- Les dernières transactions -->
+          <div>
+            <router-link to="/transactions" class="block">
+              <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
+                Voir les Dernières Transactions
+              </button>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "HomePage",
+};
+</script>
+
+<style scoped>
+/* Les styles personnalisés peuvent être ajoutés ici si nécessaire */
+</style>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/App.vue:
+<template>
+  <div id="app">
+    <router-view></router-view>
+  </div>
+</template>
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+bank-frontend/src/main.js
+// src/main.js
+// src/main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router'; // Assurez-vous que le chemin est correct
+
+import './index.css'; // Assurez-vous que cette ligne est ajoutée
+
+
+const app = createApp(App);
+
+app.use(router);
+
+app.mount('#app');
+
+------------------------------------------------------------------------------------------------------------------------
+bank-frontend/src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -15,7 +15,9 @@ const accountController = {
     createAccount: (req, res) => {
         const accounts = readAccountsFromFile();
         const newAccount = { 
-            id: accounts.length + 1, 
+            id: accounts.length + 1,
+            initialBalance: req.body.balance, // Utilisez la balance initiale fournie dans la requête pour le initialBalance
+            balance: req.body.balance, // Le solde initial est aussi le solde actuel au moment de la création
             ...req.body 
         };
         accounts.push(newAccount);
