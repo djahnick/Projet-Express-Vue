@@ -1,40 +1,76 @@
 <template>
   <div class="container mx-auto p-8">
-    <h2 class="text-2xl font-semibold mb-6">Détails du Compte</h2>
-    
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <p class="text-sm font-bold mb-2">Nom du Compte:</p>
-      <p class="mb-4">{{ accountDetails.accountName }}</p>
-      <p class="text-sm font-bold mb-2">Solde Initial:</p>
-      <p class="mb-4">{{ formattedInitialBalance }}</p>
-      <p class="text-sm font-bold mb-2">Solde Actuel:</p>
-      <p class="mb-4">{{ formattedBalance }}</p>
+    <!-- Dashboard Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <!-- Account Name Card -->
+      <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{ accountDetails.accountName }}</span>
+            <h3 class="text-base font-normal text-gray-500">Nom du Compte</h3>
+          </div>
+        </div>
+      </div>
 
-      <!-- Display Total Income and Total Expenses -->
-      <p class="text-sm font-bold mb-2">Total Revenu:</p>
-      <p class="mb-4">{{ formattedTotalIncome }}</p>
-      <p class="text-sm font-bold mb-2">Total Dépenses:</p>
-      <p class="mb-4">{{ formattedTotalExpenses }}</p>
+      <!-- Initial Balance Card -->
+      <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-gray-900">{{ formattedInitialBalance }}</span>
+            <h3 class="text-base font-normal text-gray-500">Solde Initial</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Balance Card -->
+      <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-blue-900">{{ formattedBalance }}</span>
+            <h3 class="text-base font-normal text-gray-500">Solde Actuel</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Income and Expenses Card -->
+      <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-green-500">{{ formattedTotalIncome }}</span>
+            <h3 class="text-base font-normal text-gray-500">Total Revenu</h3>
+            <span class="text-2xl sm:text-3xl leading-none font-bold text-red-500">{{ formattedTotalExpenses }}</span>
+            <h3 class="text-base font-normal text-gray-500">Total Dépenses</h3>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <TransactionForm 
-      :accountId="accountDetails.id" 
-      @transaction-created="updateTransactions"
-    />
 
-    <TransactionList 
-  ref="transactionList" 
-  :accountId="accountDetails.id"
-  @update-totals="updateTotals"
-  @transaction-deleted="updateAccountAfterTransaction" 
-/>
+    <!-- Transaction Form and List -->
+        <!-- Transaction Form -->
+        <TransactionForm 
+          :accountId="accountDetails.id" 
+          @transaction-created="updateTransactions"
+        />
+        <!-- Transaction List -->
+        <TransactionList 
+          ref="transactionList" 
+          :accountId="accountDetails.id"
+          @update-totals="updateTotals"
+          @transaction-deleted="updateTransactions" 
+          @transaction-updated="updateTransactions"
+        />
 
-<AccountChart ref="accountChart" :accountId="accountDetails.id" />
-
-
-    
+    <!-- Account Chart -->
+    <div class="mt-6">
+      <div class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 ">
+        <AccountChart ref="accountChart" :accountId="accountDetails.id" />
+      </div>
+    </div>
   </div>
 </template>
+
+
+
 
 <script>
 import axios from 'axios';

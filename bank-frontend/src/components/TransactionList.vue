@@ -159,6 +159,7 @@ async updateTransaction() {
 
       // Close the editing form
       this.isEditing = false;
+      
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la transaction', error);
     }

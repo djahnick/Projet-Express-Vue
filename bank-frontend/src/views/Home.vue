@@ -23,23 +23,8 @@
             </router-link>
           </div>
           
-          <!-- Gestion de profil -->
-          <div class="mb-6">
-            <router-link to="/profile" class="block">
-              <button class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-4 rounded transition ease-in-out duration-150">
-                Gérer le Profil
-              </button>
-            </router-link>
-          </div>
-
-          <!-- Les dernières transactions -->
-          <div>
-            <router-link to="/transactions" class="block">
-              <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
-                Voir les Dernières Transactions
-              </button>
-            </router-link>
-          </div>
+        
+         
         </div>
       </div>
     </div>

@@ -3,26 +3,34 @@
     {
       "id": 1,
       "accountName": "Compte principal",
-      "initialBalance": 1000,
-      "balance": 500,
+      "initialBalance": 17500000,
+      "balance": 17499900,
       "currency": "EUR"
     },
     {
       "id": 2,
       "accountName": "Compte d'épargne",
-      "initialBalance": 1000,
-      "balance": 1036,
+      "initialBalance": 190000,
+      "balance": 190000,
       "currency": "USD"
+    },
+    {
+      "id": 3,
+      "initialBalance": "",
+      "balance": 1000,
+      "name": "",
+      "currency": "USD",
+      "accountName": "compte test "
     }
   ],
   "transactions": [
     {
-      "id": 2,
+      "id": 1,
       "accountId": 1,
-      "date": "2023-11-22",
+      "date": "2023-11-18",
       "category": "dépense",
-      "amount": 500,
-      "description": "fff"
+      "amount": 100,
+      "description": "ko "
     }
   ]
 }
