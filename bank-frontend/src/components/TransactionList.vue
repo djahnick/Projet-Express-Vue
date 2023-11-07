@@ -47,7 +47,9 @@
               <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
   Supprimer
 </button>
-
+<button @click="editTransaction(transaction)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Modifier
+</button>
             </div>
             
             <!-- Placeholder quand il n'y a pas de revenu -->
@@ -68,6 +70,8 @@
   
               <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
   Supprimer
+</button><button @click="editTransaction(transaction)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+  Modifier
 </button>
 
             </div>
@@ -137,6 +141,32 @@
     }
   }
 },
+async updateTransaction() {
+    try {
+      const accountId = this.accountId;
+      const transactionId = this.transactionToEdit.id;
+      const response = await axios.put(`http://localhost:3000/accounts/${accountId}/transactions/${transactionId}`, this.transactionToEdit);
+      
+      const updatedTransaction = response.data;
+
+      // Find the index of the updated transaction in the transactions array
+      const index = this.transactions.findIndex(t => t.id === updatedTransaction.id);
+
+      // Replace the old transaction with the updated one
+      if (index !== -1) {
+        this.transactions[index] = updatedTransaction;
+      }
+
+      // Close the editing form
+      this.isEditing = false;
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la transaction', error);
+    }
+  },
+  editTransaction(transaction) {
+  this.transactionToEdit = { ...transaction }; // Make a copy of the transaction to edit
+  this.isEditing = true; // Set editing mode to true
+}
 
       
     }

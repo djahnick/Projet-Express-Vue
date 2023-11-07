@@ -9,7 +9,8 @@ router.post('/accounts/:accountId/transactions', transactionController.addTransa
 router.get('/accounts/:accountId/transactions', transactionController.getTransactionsByAccountId);
 
 // Mettre à jour une transaction spécifique
-router.put('/transactions/:transactionId', transactionController.updateTransaction);
+// Mettre à jour une transaction spécifique pour un compte
+router.put('/accounts/:accountId/transactions/:transactionId', transactionController.updateTransaction);
 
 // Supprimer une transactionx
 // Supprimer une transaction spécifique pour un compte

@@ -4,7 +4,7 @@
       "id": 1,
       "accountName": "Compte principal",
       "initialBalance": 1000,
-      "balance": 1000,
+      "balance": 500,
       "currency": "EUR"
     },
     {
@@ -17,19 +17,11 @@
   ],
   "transactions": [
     {
-      "id": 1,
-      "accountId": 1,
-      "date": "2023-11-16",
-      "category": "revenu",
-      "amount": 100,
-      "description": "100"
-    },
-    {
       "id": 2,
       "accountId": 1,
       "date": "2023-11-22",
       "category": "dépense",
-      "amount": 100,
+      "amount": 500,
       "description": "fff"
     }
   ]
