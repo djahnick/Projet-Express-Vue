@@ -16,7 +16,7 @@
           
           <!-- Création d'un nouveau compte -->
           <div class="mb-6">
-            <router-link to="/create-account" class="block">
+            <router-link to="/accountForm" class="block">
               <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
                 Créer un Compte
               </button>

@@ -43,11 +43,11 @@
                 <p class="text-gray-500 text-xs">{{ formatDate(transaction.date) }}</p>
               </div>
               <span class="text-green-500 font-semibold">{{ formatAmount(transaction.amount) }}</span>
-              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
-              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
-    Modifier
-  </button>
-  
+             
+              <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  Supprimer
+</button>
+
             </div>
             
             <!-- Placeholder quand il n'y a pas de revenu -->
@@ -64,11 +64,12 @@
               <span class="p-2 inline-flex items-center justify-center text-red-500">
                 <i class="fas fa-arrow-up"></i> <!-- Icone de dépense -->
               </span>
-              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
-              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
-    Modifier
-  </button>
+              
   
+              <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  Supprimer
+</button>
+
             </div>
             
             <!-- Placeholder quand il n'y a pas de dépense -->
@@ -125,29 +126,21 @@
       formatAmount(amount) {
         return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
       },
-      async deleteTransaction(transactionId) {
-      try {
-        await axios.delete(`http://localhost:3000/transactions/${transactionId}`);
-        this.transactions = this.transactions.filter(t => t.id !== transactionId);
-      } catch (error) {
-        console.error('Erreur lors de la suppression de la transaction', error);
-      }
-    },
-    startEditTransaction(transaction) {
-        this.transactionToEdit = { ...transaction };
-        this.isEditing = true;
-      },
-      async updateTransaction() {
-        try {
-          await axios.put(`http://localhost:3000/transactions/${this.transactionToEdit.id}`, this.transactionToEdit);
-          const index = this.transactions.findIndex(t => t.id === this.transactionToEdit.id);
-          this.transactions.splice(index, 1, this.transactionToEdit);
-          this.isEditing = false;
-        } catch (error) {
-          console.error('Erreur lors de la mise à jour de la transaction', error);
-        }
-      }
+      async deleteTransaction(accountId, transactionId) {
+  if (confirm('Are you sure you want to delete this transaction?')) {
+    try {
+      await axios.delete(`http://localhost:3000/accounts/${accountId}/transactions/${transactionId}`);
+      this.transactions = this.transactions.filter(t => t.id !== transactionId);
+      this.$emit('transaction-deleted'); // Emitting an event after transaction deletion
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la transaction', error);
     }
+  }
+},
+
+      
+    }
+  
   };
   </script>
   

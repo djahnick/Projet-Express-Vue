@@ -11,7 +11,16 @@ router.get('/accounts/:accountId/transactions', transactionController.getTransac
 // Mettre à jour une transaction spécifique
 router.put('/transactions/:transactionId', transactionController.updateTransaction);
 
-// Supprimer une transaction
-router.delete('/transactions/:transactionId', transactionController.deleteTransaction);
+// Supprimer une transactionx
+// Supprimer une transaction spécifique pour un compte
+router.delete('/accounts/:accountId/transactions/:transactionId', transactionController.deleteTransaction);
+
+router.post('/transfer', transactionController.transferFunds);
+
+// Calculer les dépenses totales pour un compte
+router.get('/accounts/:accountId/transactions/expenses', transactionController.getTotalExpenses);
+
+// Calculer les revenus totaux pour un compte
+router.get('/accounts/:accountId/transactions/income', transactionController.getTotalIncome);
 
 module.exports = router;

@@ -131,6 +131,7 @@ export default {
     return {
       chartData,
       chartOptions,
+      fetchAccountDetailsAndTransactions,
     };
   },
 };

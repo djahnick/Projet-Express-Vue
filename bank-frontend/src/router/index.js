@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import AccountList from '@/components/AccountList.vue';
-import CreateAccountForm from '@/components/CreateAccountForm.vue';
+import AccountForm from '@/components/AccountForm.vue';
 import AccountDetails from '@/views/AccountDetails.vue';
 
 
@@ -18,9 +18,9 @@ const routes = [
     component: AccountList
   },
   {
-    path: '/create-account',
-    name: 'CreateAccount',
-    component: CreateAccountForm
+    path: '/accountForm',
+    name: 'AccountForm',
+    component: AccountForm
   },
   {
     path: '/account/:id',

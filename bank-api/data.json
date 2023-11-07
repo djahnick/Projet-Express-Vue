@@ -4,74 +4,25 @@
       "id": 1,
       "accountName": "Compte principal",
       "initialBalance": 1000,
-      "balance": 1064,
+      "balance": 1100,
       "currency": "EUR"
     },
     {
       "id": 2,
       "accountName": "Compte d'épargne",
-      "initialBalance": 5005,
-      "balance": 5005,
-      "currency": "USD"
-    },
-    {
-      "id": 3,
-      "accountName": "dddd",
-      "initialBalance": 3,
-      "balance": 3,
-      "currency": "dd"
-    },
-    {
-      "id": 4,
-      "accountName": "",
-      "initialBalance": 0,
-      "balance": 0,
-      "currency": ""
-    },
-    {
-      "id": 5,
-      "accountName": "",
-      "initialBalance": 0,
-      "balance": 0,
-      "currency": ""
-    },
-    {
-      "id": 6,
-      "accountName": "djah",
-      "initialBalance": 22,
-      "balance": 22,
-      "currency": "eur"
-    },
-    {
-      "id": 7,
-      "accountName": "test ",
-      "initialBalance": 96,
-      "balance": 96,
-      "currency": "eur"
-    },
-    {
-      "id": 8,
-      "accountName": "djah1",
-      "initialBalance": 190,
-      "balance": 190,
-      "currency": "EUR"
-    },
-    {
-      "id": 9,
       "initialBalance": 1000,
-      "balance": 100,
-      "accountName": "1000",
-      "currency": "eur"
+      "balance": 1036,
+      "currency": "USD"
     }
   ],
   "transactions": [
     {
       "id": 1,
-      "accountId": 9,
-      "date": "2023-11-11",
+      "accountId": 1,
+      "date": "2023-11-16",
       "category": "revenu",
-      "amount": 0,
-      "description": ""
+      "amount": 100,
+      "description": "100"
     }
   ]
 }

@@ -348,11 +348,11 @@ bank-frontend/src/components/TransactionList.vue :
                 <p class="text-gray-500 text-xs">{{ formatDate(transaction.date) }}</p>
               </div>
               <span class="text-green-500 font-semibold">{{ formatAmount(transaction.amount) }}</span>
-              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
-              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
-    Modifier
-  </button>
-  
+             
+              <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  Supprimer
+</button>
+
             </div>
             
             <!-- Placeholder quand il n'y a pas de revenu -->
@@ -369,11 +369,12 @@ bank-frontend/src/components/TransactionList.vue :
               <span class="p-2 inline-flex items-center justify-center text-red-500">
                 <i class="fas fa-arrow-up"></i> <!-- Icone de dépense -->
               </span>
-              <button @click="deleteTransaction(transaction.id)" class="text-red-600 hover:text-red-700">Supprimer</button>
-              <button @click="startEditTransaction(transaction)" class="text-blue-600 hover:text-blue-700">
-    Modifier
-  </button>
+              
   
+              <button @click="deleteTransaction(accountId, transaction.id)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+  Supprimer
+</button>
+
             </div>
             
             <!-- Placeholder quand il n'y a pas de dépense -->
@@ -430,36 +431,28 @@ bank-frontend/src/components/TransactionList.vue :
       formatAmount(amount) {
         return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
       },
-      async deleteTransaction(transactionId) {
-      try {
-        await axios.delete(`http://localhost:3000/transactions/${transactionId}`);
-        this.transactions = this.transactions.filter(t => t.id !== transactionId);
-      } catch (error) {
-        console.error('Erreur lors de la suppression de la transaction', error);
-      }
-    },
-    startEditTransaction(transaction) {
-        this.transactionToEdit = { ...transaction };
-        this.isEditing = true;
-      },
-      async updateTransaction() {
-        try {
-          await axios.put(`http://localhost:3000/transactions/${this.transactionToEdit.id}`, this.transactionToEdit);
-          const index = this.transactions.findIndex(t => t.id === this.transactionToEdit.id);
-          this.transactions.splice(index, 1, this.transactionToEdit);
-          this.isEditing = false;
-        } catch (error) {
-          console.error('Erreur lors de la mise à jour de la transaction', error);
-        }
-      }
+      async deleteTransaction(accountId, transactionId) {
+  if (confirm('Are you sure you want to delete this transaction?')) {
+    try {
+      await axios.delete(`http://localhost:3000/accounts/${accountId}/transactions/${transactionId}`);
+      this.transactions = this.transactions.filter(t => t.id !== transactionId);
+      this.$emit('transaction-deleted'); // Emitting an event after transaction deletion
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la transaction', error);
     }
+  }
+},
+
+      
+    }
+  
   };
   </script>
   
   <style scoped>
   /* Tailwind classes are handling all the styling needs. If you have custom styles, you can add them here */
   
-  </style>
+  </style
   
 
 
@@ -498,7 +491,7 @@ const routes = [
     name: 'AccountDetails',
     component: AccountDetails
   },
-  // Ajoutez d'autres routes si nécessaire
+ 
 ];
 
 const router = createRouter({
@@ -526,6 +519,12 @@ bank-frontend/src/views/AccountDetails.vue :
       <p class="mb-4">{{ formattedInitialBalance }}</p>
       <p class="text-sm font-bold mb-2">Solde Actuel:</p>
       <p class="mb-4">{{ formattedBalance }}</p>
+
+      <!-- Display Total Income and Total Expenses -->
+      <p class="text-sm font-bold mb-2">Total Revenu:</p>
+      <p class="mb-4">{{ formattedTotalIncome }}</p>
+      <p class="text-sm font-bold mb-2">Total Dépenses:</p>
+      <p class="mb-4">{{ formattedTotalExpenses }}</p>
     </div>
     
     <TransactionForm 
@@ -534,9 +533,12 @@ bank-frontend/src/views/AccountDetails.vue :
     />
 
     <TransactionList 
-      ref="transactionList" 
-      :accountId="accountDetails.id"
-    />
+  ref="transactionList" 
+  :accountId="accountDetails.id"
+  @update-totals="updateTotals"
+  @transaction-deleted="updateAccountAfterTransaction" 
+/>
+
     <AccountChart :accountId="accountDetails.id" />
 
     
@@ -547,8 +549,7 @@ bank-frontend/src/views/AccountDetails.vue :
 import axios from 'axios';
 import TransactionForm from '../components/TransactionForm.vue';
 import TransactionList from '../components/TransactionList.vue';
-import AccountChart from '../components/AccountChart.vue'; // Assurez-vous que le chemin d'importation est correct
-
+import AccountChart from '../components/AccountChart.vue';
 
 export default {
   name: 'AccountDetails',
@@ -556,34 +557,62 @@ export default {
     TransactionForm,
     TransactionList,
     AccountChart
-    
   },
   data() {
     return {
-      // Set initial values to avoid errors before the actual data is fetched
       accountDetails: {
         balance: 0,
-        currency: 'EUR', // Replace 'EUR' with your default or expected currency
+        currency: 'EUR',
         accountName: '',
+        initialBalance: 0,
         id: null
-      }
+      },
+      totalIncome: null, // Ajoutez ces deux propriétés
+      totalExpenses: null
     };
   },
   computed: {
+    formattedInitialBalance() {
+      if (typeof this.accountDetails.currency === 'string' && typeof this.accountDetails.initialBalance === 'number') {
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: this.accountDetails.currency
+        }).format(this.accountDetails.initialBalance);
+      }
+      return 'Chargement...';
+    },
     formattedBalance() {
-      // Check if accountDetails has the necessary properties to avoid errors
       if (typeof this.accountDetails.currency === 'string' && typeof this.accountDetails.balance === 'number') {
         return new Intl.NumberFormat('fr-FR', {
           style: 'currency',
           currency: this.accountDetails.currency
         }).format(this.accountDetails.balance);
       }
-      // Return a placeholder or empty string if the data is not yet available
       return 'Chargement...';
-    }
+    },
+    formattedTotalIncome() {
+      if (typeof this.totalIncome === 'number') {
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: this.accountDetails.currency
+        }).format(this.totalIncome);
+      }
+      return 'Chargement...';
+    },
+    formattedTotalExpenses() {
+      if (typeof this.totalExpenses === 'number') {
+        return new Intl.NumberFormat('fr-FR', {
+          style: 'currency',
+          currency: this.accountDetails.currency
+        }).format(this.totalExpenses);
+      }
+      return 'Chargement...';
+    },
   },
   async created() {
     await this.fetchAccountDetails();
+    await this.fetchTotalIncome();
+    await this.fetchTotalExpenses();
   },
   methods: {
     async fetchAccountDetails() {
@@ -593,16 +622,39 @@ export default {
         this.accountDetails = response.data;
       } catch (error) {
         console.error('Erreur lors de la récupération des détails du compte', error);
-        // Handle error, show user-friendly message if needed
+      }
+    },
+    async fetchTotalIncome() {
+      const incomeUrl = `http://localhost:3000/accounts/${this.accountDetails.id}/transactions/income`;
+      try {
+        const response = await axios.get(incomeUrl);
+        this.totalIncome = response.data.totalIncome;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du total des revenus', error);
+      }
+    },
+    async fetchTotalExpenses() {
+      const expensesUrl = `http://localhost:3000/accounts/${this.accountDetails.id}/transactions/expenses`;
+      try {
+        const response = await axios.get(expensesUrl);
+        this.totalExpenses = response.data.totalExpenses;
+      } catch (error) {
+        console.error('Erreur lors de la récupération du total des dépenses', error);
       }
     },
     async updateTransactions() {
-      // Refresh account details and transaction list
       await this.fetchAccountDetails();
+    await this.fetchTotalIncome(); // Optionally, re-fetch total income if it could be affected
+    await this.fetchTotalExpenses(); // Optionally, re-fetch total expenses if it could be affected
       if (this.$refs.transactionList) {
         this.$refs.transactionList.fetchTransactions();
       }
-    }
+    },
+    async updateAccountAfterTransaction() {
+    await this.fetchAccountDetails(); // Refetch the account details to update the balance
+    await this.fetchTotalIncome(); // Optionally, re-fetch total income if it could be affected
+    await this.fetchTotalExpenses(); // Optionally, re-fetch total expenses if it could be affected
+  },
   }
 };
 </script>
@@ -610,6 +662,8 @@ export default {
 <style scoped>
 /* Add your styles here */
 </style>
+
+
 
 
 
@@ -674,8 +728,151 @@ export default {
 <style scoped>
 /* Les styles personnalisés peuvent être ajoutés ici si nécessaire */
 </style>
+------------------------------------------------------------------------------------------------------------------------
+bank-frontend/src/components/AccountChart.vue
 
+<template>
+  <div>
+    <line-chart :chart-data="chartData" :options="chartOptions" />
+  </div>
+</template>
 
+<script>
+import { ref, watchEffect } from 'vue';
+import { LineChart } from 'vue-chart-3';
+import { Chart, registerables } from 'chart.js';
+import axios from 'axios';
+
+Chart.register(...registerables);
+
+export default {
+  components: {
+    LineChart,
+  },
+  props: {
+    accountId: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props) {
+    const chartData = ref({
+      labels: [],
+      datasets: [
+        {
+          label: 'Solde Initial',
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgb(54, 162, 235)',
+          fill: false,
+          data: [],
+        },
+        {
+          label: 'Solde Actuel',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          borderColor: 'rgb(255, 99, 132)',
+          fill: false,
+          data: [],
+        },
+        {
+          label: 'Total Dépenses',
+          backgroundColor: 'rgba(255, 255, 0, 0.5)',
+          borderColor: 'rgb(255, 255, 0)',
+          fill: false,
+          data: [],
+        },
+        {
+          label: 'Total Revenus',
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          borderColor: 'rgb(75, 192, 192)',
+          fill: false,
+          data: [],
+        },
+      ],
+    });
+
+    const chartOptions = ref({
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: false,
+        },
+      },
+      plugins: {
+        tooltip: {
+          enabled: true,
+          mode: 'nearest',
+          intersect: false,
+        },
+      },
+    });
+
+    async function fetchAccountDetailsAndTransactions() {
+      try {
+        const accountId = props.accountId;
+
+        const accountResponse = await axios.get(`http://localhost:3000/accounts/${accountId}`);
+        const accountDetails = accountResponse.data;
+
+        const transactionsResponse = await axios.get(`http://localhost:3000/accounts/${accountId}/transactions`);
+        const transactions = transactionsResponse.data;
+
+        // Tri des transactions par date
+        transactions.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        updateChartData(accountDetails, transactions);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des données', error);
+      }
+    }
+
+    watchEffect(() => {
+      if (props.accountId) {
+        fetchAccountDetailsAndTransactions();
+      }
+    });
+
+    function updateChartData(accountDetails, transactions) {
+      chartData.value.labels = [];
+      chartData.value.datasets[0].data = []; // Solde Initial
+      chartData.value.datasets[1].data = []; // Solde Actuel
+      
+      let currentBalance = accountDetails.initialBalance;
+      let totalExpenses = 0;
+      let totalRevenues = 0;
+
+      transactions.forEach(transaction => {
+        const transactionDate = new Date(transaction.date).toLocaleDateString('fr-FR');
+        const amount = transaction.amount;
+
+        if (transaction.category.toLowerCase() === 'dépense') {
+          totalExpenses += Math.abs(amount);
+          currentBalance -= amount;
+        } else if (transaction.category.toLowerCase() === 'revenu') {
+          totalRevenues += amount;
+          currentBalance += amount;
+        }
+
+        chartData.value.labels.push(transactionDate);
+        chartData.value.datasets[0].data.push(accountDetails.initialBalance);
+        chartData.value.datasets[1].data.push(currentBalance);
+        chartData.value.datasets[2].data.push(totalExpenses);
+        chartData.value.datasets[3].data.push(totalRevenues);
+      });
+    }
+
+    return {
+      chartData,
+      chartOptions,
+      fetchAccountDetailsAndTransactions,
+    };
+  },
+};
+</script>
+
+<style scoped>
+/* Add your styles here */
+</style>
 ------------------------------------------------------------------------------------------------------------------------
 
 
@@ -711,3 +908,5 @@ bank-frontend/src/index.css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
