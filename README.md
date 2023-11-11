@@ -1,6 +1,5 @@
 
 
-```markdown
 # MonProjet
 
 ## Description
