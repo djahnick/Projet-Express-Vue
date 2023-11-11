@@ -1,6 +1,4 @@
-D'accord, je vais reformuler le contenu avec une mise en forme appropriée pour un fichier `README.md`. Voici comment cela pourrait se présenter :
 
----
 
 ```markdown
 # MonProjet
