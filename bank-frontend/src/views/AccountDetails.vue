@@ -66,7 +66,14 @@
         <AccountChart ref="accountChart" :accountId="accountDetails.id" />
       </div>
     </div>
+
+   
+    <TransferFunds
+      :from-account="accountDetails.id"
+      @transfer-completed="updateTransactions"
+    />
   </div>
+
 </template>
 
 
@@ -77,13 +84,17 @@ import axios from 'axios';
 import TransactionForm from '../components/TransactionForm.vue';
 import TransactionList from '../components/TransactionList.vue';
 import AccountChart from '../components/AccountChart.vue';
+import TransferFunds from '../components/TransferFunds.vue';
+
 
 export default {
   name: 'AccountDetails',
   components: {
     TransactionForm,
     TransactionList,
-    AccountChart
+    AccountChart,
+    TransferFunds
+
   },
   data() {
     return {
