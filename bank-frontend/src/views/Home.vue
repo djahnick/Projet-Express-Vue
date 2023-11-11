@@ -1,15 +1,15 @@
 <template>
-  <div class="container mx-auto px-4 py-10">
+  <div class="container mx-auto px-4 py-10 mb-12">
     <div class="flex justify-center">
       <div class="w-full max-w-6xl">
-        <div class="bg-white shadow-xl rounded-xl p-8">
-          <h1 class="text-4xl font-bold text-center mb-10 text-gray-800">Bienvenue à MKDG Banque</h1>
+        <div class="bg-blue-900 text-white shadow-xl rounded-xl p-8">
+          <h1 class="text-4xl font-bold text-center mb-10">Bienvenue à MKDG Banque</h1>
           
-          <!-- Autres sections ici ... -->
- <!-- Vue d'ensemble des comptes -->
- <div class="mb-6">
+          <!-- Autres sections ici... -->
+          <!-- Vue d'ensemble des comptes -->
+          <div class="mb-6">
             <router-link to="/accounts" class="block">
-              <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded transition ease-in-out duration-150">
+              <button class="w-full bg-white hover:bg-gray-200 text-blue-900 font-bold py-3 px-4 rounded transition ease-in-out duration-150">
                 Voir les Comptes
               </button>
             </router-link>
@@ -26,27 +26,29 @@
 
           <!-- Section des indices boursiers -->
           <div class="mb-6">
-            <h2 class="text-2xl font-bold text-center mb-4 text-gray-700">Indices Boursiers</h2>
+            <h2 class="text-2xl font-bold text-center mb-4">Indices Boursiers</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div v-for="(data, index) in chartDatasets" :key="index" class="p-4 bg-gray-100 rounded-lg">
+              <div v-for="(data, index) in chartDatasets" :key="index" class="p-4 bg-gray-700 rounded-lg">
                 <h3 class="text-lg font-bold text-center mb-3">{{ data.label }}</h3>
                 <line-chart :chart-data="createChartData(data)" :options="chartOptions"></line-chart>
               </div>
             </div>
           </div>
 
-
           
         </div>
       </div>
     </div>
   </div>
+  
 </template>
+
 
 <script>
 import { defineComponent, ref } from 'vue';
 import { Chart, registerables } from 'chart.js';
 import { LineChart } from 'vue-chart-3';
+
 
 Chart.register(...registerables);
 
@@ -57,19 +59,32 @@ export default defineComponent({
   },
   setup() {
     
-    const chartDatasets = ref([
-      {
-        label: 'CAC 40',
-        borderColor: '#42A5F5',
-        data: [6900, 6950, 6920, 6880, 6905, 6930, 6910, 6940, 6960]
-      },
-      {
-        label: 'S&P 500',
-        borderColor: '#9CCC65',
-        data: [4350, 4380, 4370, 4360, 4385, 4390, 4385, 4395, 4400]
-      },
-      // Ajoutez d'autres objets pour chaque indice boursier que vous voulez montrer
-    ]);
+   const chartDatasets = ref([
+  {
+    label: 'CAC 40',
+    borderColor: '#42A5F5',
+    data: [6900, 6950, 6920, 6880, 6905, 6930, 6910, 6940, 6960]
+  },
+  
+
+  {
+    label: 'Bitcoin (BTC)',
+    borderColor: '#FFD700',
+    data: [55000, 55500, 56000, 56500, 57000, 57500, 58000, 58500, 59000]
+  },
+  {
+    label: 'XAU/USD',
+    borderColor: '#FFA500',
+    data: [1800, 1820, 1815, 1810, 1825, 1830, 1825, 1835, 1840]
+  },
+  {
+    label: 'EUR/USD',
+    borderColor: '#FF6347',
+    data: [1.1500, 1.1550, 1.1525, 1.1510, 1.1555, 1.1560, 1.1555, 1.1570, 1.1580]
+  },
+  // Ajoutez d'autres indices boursiers au besoin
+]);
+
 
     const chartOptions = ref({
       responsive: true,
@@ -111,30 +126,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-/* Votre style personnalisé ici */
-.grid-cols-1 {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-@media (min-width: 768px) {
-  .grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
-}
-
-.rounded-lg {
-  border-radius: 0.5rem;
-}
-
-.p-4 {
-  padding: 1rem;
-}
-</style>

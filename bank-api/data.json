@@ -4,7 +4,7 @@
       "id": 1,
       "accountName": "Compte principal",
       "initialBalance": 17500000,
-      "balance": 17499900,
+      "balance": 17499918,
       "currency": "EUR"
     },
     {
@@ -47,6 +47,46 @@
       "amount": 1,
       "date": "2023-11-07T18:23:28.490Z",
       "type": "transfer"
+    },
+    {
+      "id": 4,
+      "accountId": 1,
+      "date": "2023-11-10",
+      "category": "revenu",
+      "amount": 15,
+      "description": "okok "
+    },
+    {
+      "id": 5,
+      "accountId": 1,
+      "date": "2023-11-08",
+      "category": "dépense",
+      "amount": 14,
+      "description": "ssss"
+    },
+    {
+      "id": 7,
+      "accountId": 1,
+      "date": "2023-11-09",
+      "category": "revenu",
+      "amount": 17,
+      "description": "sssss"
+    },
+    {
+      "id": 8,
+      "accountId": 1,
+      "date": "2023-11-22",
+      "category": "revenu",
+      "amount": 17,
+      "description": "ssss"
+    },
+    {
+      "id": 9,
+      "accountId": 1,
+      "date": "2023-11-14",
+      "category": "dépense",
+      "amount": 17,
+      "description": "ssss"
     }
   ]
 }

@@ -1,8 +1,13 @@
 <template>
-  <div>
+  <div class="my-chart-container">
+    <div class="chart-title">
+      <i class="fas fa-chart-line"></i>
+      <span> Evolution du Compte</span>
+    </div>
     <line-chart :chart-data="chartData" :options="chartOptions" />
   </div>
 </template>
+
 
 <script>
 import { ref, watchEffect } from 'vue';

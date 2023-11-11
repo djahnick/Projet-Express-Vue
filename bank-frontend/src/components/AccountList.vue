@@ -6,15 +6,16 @@
         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
           <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+              <!-- ... (le reste de votre code) ... -->
+              <thead class="bg-blue-800">
                 <tr>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Nom du Compte
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Solde
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Devise
                   </th>
                   <th scope="col" class="relative px-6 py-3">
@@ -26,6 +27,7 @@
                 <tr v-for="account in accounts" :key="account.id">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
+                      <i class="fa fa-user-circle text-xl text-gray-500 mr-2"></i> <!-- Icône d'utilisateur -->
                       <div class="text-sm font-medium text-gray-900">
                         {{ account.accountName }}
                       </div>
@@ -51,6 +53,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
