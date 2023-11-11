@@ -14,4 +14,5 @@ Pour installer et démarrer le serveur de l'API, suivez ces étapes :
 ```bash
 cd bank-api
 npm install
-node app.js
+node app.js```
+ftftftftt
