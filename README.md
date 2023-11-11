@@ -27,7 +27,4 @@ Pour configurer et lancer l'application frontend, exécutez les commandes suivan
 cd bank-frontend
 npm install
 npm run serve
-```
 
-
-```
