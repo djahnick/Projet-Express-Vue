@@ -17,10 +17,18 @@
     {
       "id": 3,
       "initialBalance": "",
-      "balance": 1000,
+      "balance": 13,
       "name": "",
       "currency": "USD",
-      "accountName": "compte test "
+      "accountName": "cccc"
+    },
+    {
+      "id": 4,
+      "initialBalance": 11111,
+      "balance": 11111,
+      "name": "",
+      "currency": "EUR",
+      "accountName": "zezz"
     }
   ],
   "transactions": [

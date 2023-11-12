@@ -15,9 +15,10 @@
           <label class="block text-gray-700 text-sm font-bold mb-2" for="initial-balance">
             Solde Initial
           </label>
-          <input v-model.number="accountData.balance" type="number" placeholder="Solde Initial"
-                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                 id="initial-balance" required min="0">
+          <input v-model.number="accountData.initialBalance" type="number" placeholder="Solde Initial"
+       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+       id="initial-balance" required min="0">
+
         </div>
         <div class="mb-6">
     <label class="block text-gray-700 text-sm font-bold mb-2" for="currency">
@@ -46,25 +47,26 @@ export default {
   data() {
     return {
       accountData: {
-        name: '', // Assurez-vous que ce champ correspond au modèle du formulaire
-        initialBalance: '', // Assurez-vous que ce champ correspond au modèle du formulaire
+        name: '', 
+        initialBalance: '', 
         currency: '', // Assurez-vous que ce champ correspond au modèle du formulaire
       },
     };
   },
   methods: {
     async createAccount() {
-      try {
-        const response = await axios.post('http://localhost:3000/accounts', this.accountData);
-        // Handle success, e.g., show a success message
-        console.log('Account created:', response.data);
-        // Redirect to the Home page using the router
-        this.$router.push('/');
-      } catch (error) {
-        // Handle error, e.g., show an error message
-        console.error('Error creating account:', error);
-      }
-    },
+  try {
+    const response = await axios.post('http://localhost:3000/accounts', {
+      ...this.accountData,
+      balance: this.accountData.initialBalance  // Ajoutez cette ligne pour envoyer le solde initial comme balance
+    });
+    console.log('Account created:', response.data);
+    this.$router.push('/');
+  } catch (error) {
+    console.error('Error creating account:', error);
+  }
+},
+
   },
 };
 </script>

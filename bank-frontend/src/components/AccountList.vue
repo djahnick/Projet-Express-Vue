@@ -43,7 +43,10 @@
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <router-link :to="`/account/${account.id}`" class="text-indigo-600 hover:text-indigo-900">Voir</router-link>
+                    <button @click="deleteAccount(account.id)" class="ml-4 text-red-600 hover:text-red-900">Supprimer</button>
+
                   </td>
+                  
                 </tr>
               </tbody>
             </table>
@@ -71,6 +74,16 @@ export default {
       this.accounts = response.data;
     } catch (error) {
       console.error('Erreur lors de la récupération des comptes', error);
+    }
+  },
+  methods: {
+    async deleteAccount(accountId) {
+      try {
+        await axios.delete(`http://localhost:3000/accounts/${accountId}`);
+        this.accounts = this.accounts.filter(account => account.id !== accountId);
+      } catch (error) {
+        console.error('Erreur lors de la suppression du compte', error);
+      }
     }
   }
 };
