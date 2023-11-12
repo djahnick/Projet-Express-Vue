@@ -2,99 +2,61 @@
   "accounts": [
     {
       "id": 1,
-      "accountName": "Compte principal",
-      "initialBalance": 17500000,
-      "balance": 17499918,
-      "currency": "EUR"
-    },
-    {
-      "id": 2,
-      "accountName": "Compte d'épargne",
-      "initialBalance": 190000,
-      "balance": 190000,
-      "currency": "USD"
-    },
-    {
-      "id": 3,
-      "initialBalance": "",
-      "balance": 13,
-      "name": "",
-      "currency": "USD",
-      "accountName": "cccc"
-    },
-    {
-      "id": 4,
-      "initialBalance": 11111,
-      "balance": 11111,
+      "initialBalance": 3500,
+      "balance": 5070,
       "name": "",
       "currency": "EUR",
-      "accountName": "zezz"
+      "accountName": "TOP1"
     }
   ],
   "transactions": [
     {
       "id": 1,
       "accountId": 1,
-      "date": "2023-11-18",
+      "date": "2023-11-14",
       "category": "dépense",
-      "amount": 100,
-      "description": "ko "
+      "amount": 700,
+      "description": "LOYER"
     },
     {
       "id": 2,
-      "fromAccountId": 1,
-      "toAccountId": 2,
-      "amount": 1,
-      "date": "2023-11-07T18:22:49.922Z",
-      "type": "transfer"
+      "accountId": 1,
+      "date": "2023-11-18",
+      "category": "dépense",
+      "amount": 110,
+      "description": "VOITURE"
     },
     {
       "id": 3,
-      "fromAccountId": 2,
-      "toAccountId": 1,
-      "amount": 1,
-      "date": "2023-11-07T18:23:28.490Z",
-      "type": "transfer"
+      "accountId": 1,
+      "date": "2023-11-23",
+      "category": "dépense",
+      "amount": 150,
+      "description": "repas"
     },
     {
       "id": 4,
       "accountId": 1,
-      "date": "2023-11-10",
+      "date": "2023-11-08",
       "category": "revenu",
-      "amount": 15,
-      "description": "okok "
+      "amount": 2500,
+      "description": "Site freelance"
     },
     {
       "id": 5,
       "accountId": 1,
-      "date": "2023-11-08",
-      "category": "dépense",
-      "amount": 14,
-      "description": "ssss"
-    },
-    {
-      "id": 7,
-      "accountId": 1,
-      "date": "2023-11-09",
+      "date": "2023-11-16",
       "category": "revenu",
-      "amount": 17,
-      "description": "sssss"
+      "amount": 150,
+      "description": "CAF"
     },
     {
-      "id": 8,
+      "id": 6,
       "accountId": 1,
-      "date": "2023-11-22",
-      "category": "revenu",
-      "amount": 17,
-      "description": "ssss"
-    },
-    {
-      "id": 9,
-      "accountId": 1,
-      "date": "2023-11-14",
+      "date": "2023-11-16",
       "category": "dépense",
-      "amount": 17,
-      "description": "ssss"
+      "amount": 120,
+      "description": "week-end hotel"
     }
   ]
 }
